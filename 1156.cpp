@@ -1,5 +1,5 @@
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 using namespace std;
 
@@ -10,26 +10,24 @@ int maxRepOpt1(string text) {
     int res = 0;
 
     for (auto [target, _] : freq) {
-        int non_targets = 0;
+        int nontargets = 0;
         int l = 0;
 
         for (int r = 0; r < text.length(); r++) {
-            if (text[r] != target) non_targets++;
+            nontargets += text[r] != target;
 
-            while (non_targets > 1) {
-                if (text[l] != target) non_targets--;
+            while (nontargets > 1) {
+                nontargets -= text[l] != target;
                 l++;
             }
 
             int wsize = r - l + 1;
 
-            if (!non_targets) {
-                res = max(wsize, res);
+            if (!nontargets) {
+                res = max(res, wsize);
                 continue;
             }
 
-            // Do we have chars outside the window 
-            // that we can swap into the window?
             res = max(freq[target] > wsize - 1 ? wsize : wsize - 1, res);
         }
     }
